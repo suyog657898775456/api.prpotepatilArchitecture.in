@@ -50,6 +50,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// ADDED: Root route to fix "Cannot GET /"
+app.get("/", (req, res) => {
+  res.send("PRPARC API is running...");
+});
+
 app.use("/api", authRoutes);
 app.use("/api/fra", fraRoutes);
 app.use("/api/staff", staffRoutes);
@@ -88,7 +93,14 @@ const verifyDB = async () => {
 };
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  verifyDB();
-});
+
+// MODIFIED: Ensure it works on both local and Vercel
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    verifyDB();
+  });
+}
+
+// ADDED: Required for Vercel deployment
+module.exports = app;
