@@ -34,7 +34,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"], // Allow both Admin and Main Website
+    origin: "*", // Allows any frontend to connect
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   }),
